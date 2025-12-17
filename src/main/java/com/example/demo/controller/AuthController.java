@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,8 +14,11 @@ import com.example.demo.service.UserService;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    @Autowired
-    UserService userService;
+    
+    private final UserService userService;
+    AuthController(UserService userService){
+        this.userService=userService;
+    }
 
     @PostMapping("/register")
     public User registerdata(@RequestBody User user){
