@@ -7,6 +7,7 @@ import com.example.demo.model.CategorizationRule;
 public interface CategorizationRuleService {
     CategorizationRule createRule(Long categoryId,CategorizationRule rule);
     List<CategorizationRule>getRulesByCategory(Long categoryId);
-    CategorizationRule getPolicy(Long id);
+    CategorizationRule getRule(Long id);
     
+
 } 
