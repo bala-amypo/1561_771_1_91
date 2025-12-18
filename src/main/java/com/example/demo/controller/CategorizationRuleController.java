@@ -26,7 +26,7 @@ public class CategorizationRuleController {
     }
     @GetMapping("/{id}")
     public CategorizationRule getdata(@PathVariable Long id){
-        return categorizationRuleService.getPolicy(id);
+        return categorizationRuleService.getRule(id);
     }
     @GetMapping("/category/{categoryId}")
     public List<CategorizationRule>getRulesByCategory(Long categoryId){
