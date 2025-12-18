@@ -29,7 +29,7 @@ public class CategorizationRuleController {
         return categorizationRuleService.getRule(id);
     }
     @GetMapping("/category/{categoryId}")
-    public List<CategorizationRule>getRulesByCategory(Long categoryId){
+    public List<CategorizationRule>getRulesByCategory(@PathVariable Long categoryId){
 
         return categorizationRuleService.getRulesByCategory(categoryId);
     }
