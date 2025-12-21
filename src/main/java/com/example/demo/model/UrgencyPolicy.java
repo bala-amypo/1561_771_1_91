@@ -1,16 +1,16 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+// import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+// import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+// import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 @Entity
@@ -25,9 +25,9 @@ public class UrgencyPolicy {
     @Column(nullable = false)
     private String urgencyOverride;
     private LocalDateTime createdAt;
-    @ManyToMany
-    @JsonIgnore
-    private Set<Category> categories;
+    // @ManyToMany
+    // @JsonIgnore
+    // private Set<Category> categories;
     @PrePersist
     protected void updated(){
         this.createdAt=LocalDateTime.now();
@@ -71,12 +71,12 @@ public class UrgencyPolicy {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-    public Set<Category> getCategories() {
-        return categories;
-    }
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
+    // public Set<Category> getCategories() {
+    //     return categories;
+    // }
+    // public void setCategories(Set<Category> categories) {
+    //     this.categories = categories;
+    // }
     
     
 
