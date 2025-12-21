@@ -3,6 +3,8 @@ package com.example.demo.model;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +26,7 @@ public class UrgencyPolicy {
     private String urgencyOverride;
     private LocalDateTime createdAt;
     @ManyToMany
+    @JsonIgnore
     private Set<Category> categories;
     @PrePersist
     protected void updated(){
