@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,15 +23,15 @@ public class TicketController {
         this.ticketService=ticketService;
     }
     @PostMapping
-    public Ticket createData(@Valid @RequestBody Ticket ticket){
-        return ticketService.createTicket(ticket);
+    public ResponseEntity<Ticket> createData(@Valid @RequestBody Ticket ticket){
+        return ResponseEntity.status(201).body(ticketService.createTicket(ticket));
     }
     @GetMapping
-    public List<Ticket> getData(){
-        return ticketService.getAllTickets();
+    public ResponseEntity<List<Ticket>> getData(){
+        return ResponseEntity.status(200).body(ticketService.getAllTickets());
     }
     @GetMapping("/{id}")
-    public Ticket getTicket(@PathVariable Long id){
-        return ticketService.getTicket(id);
+    public ResponseEntity<Ticket> getTicket(@PathVariable Long id){
+        return ResponseEntity.status(200).body(ticketService.getTicket(id));
     }
 }

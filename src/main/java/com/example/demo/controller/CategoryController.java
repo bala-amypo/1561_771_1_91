@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,15 +22,16 @@ public class CategoryController {
         this.categoryService=categoryService;
     }
     @PostMapping
-    public Category createData(@RequestBody Category category){
-        return categoryService.createCategory(category);
+    public ResponseEntity<Category> createData(@RequestBody Category category){
+        return ResponseEntity.status(201).body(categoryService.createCategory(category));
     }
     @GetMapping("/{id}")
-    public Category getCategory(@PathVariable Long id){
-        return categoryService.getCategory(id);
+    public ResponseEntity<Category> getCategory(@PathVariable Long id){
+        return ResponseEntity.status(200).body(categoryService.getCategory(id)) ;
     }
     @GetMapping
-    public List<Category> getAllCategories(){
-        return categoryService.getAllCategories();
+    public ResponseEntity<List<Category>> getAllCategories(){
+        List<Category> categorydata= categoryService.getAllCategories();
+        return ResponseEntity.ok(categorydata);
     }
 }

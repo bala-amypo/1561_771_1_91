@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,16 +21,16 @@ public class UrgencyPolicyController {
         this.urgencyPolicyService=urgencyPolicyService;
     }
     @PostMapping
-    public UrgencyPolicy createPolicy(@RequestBody UrgencyPolicy urgencyPolicy){
-        return urgencyPolicyService.createPolicy(urgencyPolicy);
+    public ResponseEntity<UrgencyPolicy> createPolicy(@RequestBody UrgencyPolicy urgencyPolicy){
+        return ResponseEntity.status(201).body(urgencyPolicyService.createPolicy(urgencyPolicy));
     }
     @GetMapping
-    public List<UrgencyPolicy> getAllPolicies(){
-        return urgencyPolicyService.getAllPolicies();
+    public ResponseEntity<List<UrgencyPolicy>> getAllPolicies(){
+        return ResponseEntity.status(200).body(urgencyPolicyService.getAllPolicies());
     }
     @GetMapping("/{id}")
-    public UrgencyPolicy getPolicy(@PathVariable Long id){
-        return urgencyPolicyService.getPolicy(id);
+    public ResponseEntity<UrgencyPolicy> getPolicy(@PathVariable Long id){
+        return ResponseEntity.status(200).body(urgencyPolicyService.getPolicy(id));
     }
 
 
