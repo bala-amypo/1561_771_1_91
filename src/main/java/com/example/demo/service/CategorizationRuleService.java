@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import java.util.List;
-
 import com.example.demo.model.CategorizationRule;
 
 public interface CategorizationRuleService {
@@ -12,5 +11,5 @@ public interface CategorizationRuleService {
 
     List<CategorizationRule> getAllRules();
 
-    void deleteRule(Long id);
+    List<CategorizationRule> getRulesByCategory(Long categoryId); // ✅ ADD
 }

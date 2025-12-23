@@ -42,11 +42,8 @@ public class CategorizationRuleServiceImpl implements CategorizationRuleService 
     public List<CategorizationRule> getAllRules() {
         return ruleRepository.findAll();
     }
-
-    @Override
-    public void deleteRule(Long id) {
-        CategorizationRule rule = ruleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
-        ruleRepository.delete(rule);
-    }
+@Override
+public List<CategorizationRule> getRulesByCategory(Long categoryId) {
+    return categorizationRuleRepository.findByCategoryId(categoryId);
+}
 }
