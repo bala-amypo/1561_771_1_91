@@ -13,25 +13,30 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.Ticket;
 import com.example.demo.service.TicketService;
 
-import jakarta.validation.Valid;
-
 @RestController
 @RequestMapping("/api/tickets")
 public class TicketController {
-    private final TicketService ticketService;
-    TicketController(TicketService ticketService){
-        this.ticketService=ticketService;
-    }
-    @PostMapping
-    public ResponseEntity<Ticket> createData(@Valid @RequestBody Ticket ticket){
-        return ResponseEntity.status(201).body(ticketService.createTicket(ticket));
-    }
-    @GetMapping
-    public ResponseEntity<List<Ticket>> getData(){
-        return ResponseEntity.status(200).body(ticketService.getAllTickets());
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<Ticket> getTicket(@PathVariable Long id){
-        return ResponseEntity.status(200).body(ticketService.getTicket(id));
-    }
+
+private final TicketService ticketService;
+
+public TicketController(TicketService ticketService) {
+    this.ticketService = ticketService;
+}
+
+@PostMapping
+public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) {
+    return ResponseEntity.ok(ticketService.createTicket(ticket));
+}
+
+@GetMapping
+public ResponseEntity<List<Ticket>> getAllTickets() {
+    return ResponseEntity.ok(ticketService.getAllTickets());
+}
+
+@GetMapping("/{id}")
+public ResponseEntity<Ticket> getTicket(@PathVariable Long id) {
+    return ResponseEntity.ok(ticketService.getTicket(id));
+}
+
+
 }
