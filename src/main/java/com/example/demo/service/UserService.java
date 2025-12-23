@@ -4,7 +4,9 @@ import com.example.demo.model.User;
 
 public interface UserService {
 
-    public User register(User user);
-    // public User getUser(Long id);
-    // public User findByEmail(String email);    
+    User register(User user);
+
+    User findByEmail(String email);
+
+    User getById(Long id);
 }

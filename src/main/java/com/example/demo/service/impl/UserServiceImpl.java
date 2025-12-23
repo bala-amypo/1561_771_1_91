@@ -8,12 +8,25 @@ import com.example.demo.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
-    UserServiceImpl(UserRepository userRepository){
-        this.userRepository=userRepository;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
-    
-    public User register(User user){
+
+    @Override
+    public User register(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User getById(Long id) {
+        return userRepository.findById(id).orElse(null);
     }
 }
