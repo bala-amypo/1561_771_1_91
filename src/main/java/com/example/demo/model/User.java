@@ -1,41 +1,35 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name="users")
-public class User{
-    
+@Table(name = "users")
+public class User {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column (nullable = false)
+
+    @Column(nullable = false)
     private String fullName;
-    @Column (unique = true,nullable = false)
+
+    @Column(nullable = false, unique = true)
     private String email;
-    @Column (nullable = false)
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private String role;
+
     private LocalDateTime createdAt;
 
-    @PrePersist
-    protected void onCreated(){
-        this.createdAt = LocalDateTime.now();
-        if (this.role==null) {
-            
-            this.role="USER";
-        }
-    }
-    
+    @OneToMany(mappedBy = "user")
+    private List<Ticket> tickets;
+
     public User() {
     }
 
@@ -44,15 +38,18 @@ public class User{
         this.email = email;
         this.password = password;
         this.role = role;
-        
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        if (this.role == null) {
+            this.role = "USER";
+        }
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFullName() {
@@ -90,11 +87,4 @@ public class User{
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-    
-    
-    
 }
