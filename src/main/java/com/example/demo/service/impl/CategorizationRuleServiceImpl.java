@@ -5,12 +5,14 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.Category;
 import com.example.demo.model.CategorizationRule;
+import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.CategorizationRuleRepository;
 import com.example.demo.service.CategorizationRuleService;
 
 @Service
-public class CategorizationRuleServiceImpl 
+public class CategorizationRuleServiceImpl
         implements CategorizationRuleService {
 
     private final CategorizationRuleRepository ruleRepository;
@@ -26,8 +28,8 @@ public class CategorizationRuleServiceImpl
     @Override
     public CategorizationRule createRule(Long categoryId, CategorizationRule rule) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> 
-                    new ResourceNotFoundException("Category not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Category not found"));
 
         rule.setCategory(category);
         return ruleRepository.save(rule);
@@ -37,7 +39,7 @@ public class CategorizationRuleServiceImpl
     public CategorizationRule getRule(Long id) {
         return ruleRepository.findById(id)
                 .orElseThrow(() ->
-                    new ResourceNotFoundException("Rule not found"));
+                        new ResourceNotFoundException("Rule not found"));
     }
 
     @Override
