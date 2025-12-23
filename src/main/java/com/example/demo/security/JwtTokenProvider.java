@@ -1,19 +1,19 @@
-package com.example.demo.security;
+// package com.example.demo.security;
 
-import org.springframework.stereotype.Component;
+// import org.springframework.stereotype.Component;
 
-@Component
-public class JwtTokenProvider {
+// @Component
+// public class JwtTokenProvider {
 
-    public String generateToken(String username) {
-        return "DUMMY_TOKEN";
-    }
+//     public String generateToken(String username) {
+//         return "DUMMY_TOKEN";
+//     }
 
-    public String getUsernameFromToken(String token) {
-        return null;
-    }
+//     public String getUsernameFromToken(String token) {
+//         return null;
+//     }
 
-    public boolean validateToken(String token) {
-        return true;
-    }
-}
+//     public boolean validateToken(String token) {
+//         return true;
+//     }
+// }
