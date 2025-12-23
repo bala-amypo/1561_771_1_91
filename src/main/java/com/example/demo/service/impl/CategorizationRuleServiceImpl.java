@@ -5,45 +5,38 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.Category;
 import com.example.demo.model.CategorizationRule;
-import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.CategorizationRuleRepository;
 import com.example.demo.service.CategorizationRuleService;
 
 @Service
 public class CategorizationRuleServiceImpl implements CategorizationRuleService {
 
-    private final CategorizationRuleRepository ruleRepository;
-    private final CategoryRepository categoryRepository;
+    private final CategorizationRuleRepository categorizationRuleRepository;
 
-    public CategorizationRuleServiceImpl(
-            CategorizationRuleRepository ruleRepository,
-            CategoryRepository categoryRepository) {
-        this.ruleRepository = ruleRepository;
-        this.categoryRepository = categoryRepository;
+    public CategorizationRuleServiceImpl(CategorizationRuleRepository categorizationRuleRepository) {
+        this.categorizationRuleRepository = categorizationRuleRepository;
     }
 
     @Override
-    public CategorizationRule createRule(Long categoryId, CategorizationRule rule) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-        rule.setCategory(category);
-        return ruleRepository.save(rule);
+    public CategorizationRule createRule(CategorizationRule rule) {
+        return categorizationRuleRepository.save(rule);
     }
 
     @Override
     public CategorizationRule getRule(Long id) {
-        return ruleRepository.findById(id)
+        return categorizationRuleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Rule not found"));
     }
 
     @Override
     public List<CategorizationRule> getAllRules() {
-        return ruleRepository.findAll();
+        return categorizationRuleRepository.findAll();
     }
-@Override
-public List<CategorizationRule> getRulesByCategory(Long categoryId) {
-    return categorizationRuleRepository.findByCategoryId(categoryId);
-}
+
+    @Override
+    public void deleteRule(Long id) {
+        CategorizationRule rule = getRule(id);
+        categorizationRuleRepository.delete(rule);
+    }
 }
