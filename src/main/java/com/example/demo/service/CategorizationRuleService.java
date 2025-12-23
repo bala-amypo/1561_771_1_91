@@ -5,9 +5,12 @@ import java.util.List;
 import com.example.demo.model.CategorizationRule;
 
 public interface CategorizationRuleService {
-    CategorizationRule createRule(Long categoryId,CategorizationRule rule);
-    List<CategorizationRule>getRulesByCategory(Long categoryId);
-    CategorizationRule getRule(Long id);
-    
 
-} 
+    CategorizationRule createRule(Long categoryId, CategorizationRule rule);
+
+    CategorizationRule getRule(Long id);
+
+    List<CategorizationRule> getAllRules();
+
+    void deleteRule(Long id);
+}
