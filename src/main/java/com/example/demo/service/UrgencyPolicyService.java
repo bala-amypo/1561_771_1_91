@@ -6,9 +6,9 @@ import com.example.demo.model.UrgencyPolicy;
 
 public interface UrgencyPolicyService {
 
-    
-
     UrgencyPolicy createPolicy(UrgencyPolicy urgencyPolicy);
+
     UrgencyPolicy getPolicy(Long id);
+
     List<UrgencyPolicy> getAllPolicies();
 }
