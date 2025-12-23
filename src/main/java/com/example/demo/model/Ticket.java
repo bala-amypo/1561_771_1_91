@@ -12,9 +12,16 @@ public class Ticket {
     private Long id;
 
     private String title;
+
     private String description;
 
+    private String urgencyLevel;
+
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "assigned_category_id")
+    private Category assignedCategory;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -27,6 +34,8 @@ public class Ticket {
 
     public Ticket() {}
 
+    // -------- getters & setters --------
+
     public Long getId() {
         return id;
     }
@@ -38,11 +47,11 @@ public class Ticket {
     public String getTitle() {
         return title;
     }
- 
+
     public void setTitle(String title) {
         this.title = title;
     }
- 
+
     public String getDescription() {
         return description;
     }
@@ -50,7 +59,23 @@ public class Ticket {
     public void setDescription(String description) {
         this.description = description;
     }
- 
+
+    public String getUrgencyLevel() {
+        return urgencyLevel;
+    }
+
+    public void setUrgencyLevel(String urgencyLevel) {
+        this.urgencyLevel = urgencyLevel;
+    }
+
+    public Category getAssignedCategory() {
+        return assignedCategory;
+    }
+
+    public void setAssignedCategory(Category assignedCategory) {
+        this.assignedCategory = assignedCategory;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
