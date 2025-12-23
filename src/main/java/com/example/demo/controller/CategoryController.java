@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -17,21 +16,27 @@ import com.example.demo.service.CategoryService;
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
-    private final CategoryService categoryService;
-    CategoryController(CategoryService categoryService){
-        this.categoryService=categoryService;
-    }
-    @PostMapping
-    public ResponseEntity<Category> createData(@RequestBody Category category){
-        return ResponseEntity.status(201).body(categoryService.createCategory(category));
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategory(@PathVariable Long id){
-        return ResponseEntity.status(200).body(categoryService.getCategory(id)) ;
-    }
-    @GetMapping
-    public ResponseEntity<List<Category>> getAllCategories(){
-        List<Category> categorydata= categoryService.getAllCategories();
-        return ResponseEntity.ok(categorydata);
-    }
+
+private final CategoryService categoryService;
+
+public CategoryController(CategoryService categoryService) {
+    this.categoryService = categoryService;
+}
+
+@PostMapping
+public ResponseEntity<Category> createCategory(@RequestBody Category category) {
+    return ResponseEntity.ok(categoryService.createCategory(category));
+}
+
+@GetMapping
+public ResponseEntity<List<Category>> getAllCategories() {
+    return ResponseEntity.ok(categoryService.getAllCategories());
+}
+
+@GetMapping("/{id}")
+public ResponseEntity<Category> getCategory(@PathVariable Long id) {
+    return ResponseEntity.ok(categoryService.getCategory(id));
+}
+
+
 }

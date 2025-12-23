@@ -16,22 +16,27 @@ import com.example.demo.service.UrgencyPolicyService;
 @RestController
 @RequestMapping("/api/policies")
 public class UrgencyPolicyController {
-    private final UrgencyPolicyService urgencyPolicyService;
-    UrgencyPolicyController(UrgencyPolicyService urgencyPolicyService){
-        this.urgencyPolicyService=urgencyPolicyService;
-    }
-    @PostMapping
-    public ResponseEntity<UrgencyPolicy> createPolicy(@RequestBody UrgencyPolicy urgencyPolicy){
-        return ResponseEntity.status(201).body(urgencyPolicyService.createPolicy(urgencyPolicy));
-    }
-    @GetMapping
-    public ResponseEntity<List<UrgencyPolicy>> getAllPolicies(){
-        return ResponseEntity.status(200).body(urgencyPolicyService.getAllPolicies());
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<UrgencyPolicy> getPolicy(@PathVariable Long id){
-        return ResponseEntity.status(200).body(urgencyPolicyService.getPolicy(id));
-    }
+
+private final UrgencyPolicyService policyService;
+
+public UrgencyPolicyController(UrgencyPolicyService policyService) {
+    this.policyService = policyService;
+}
+
+@PostMapping
+public ResponseEntity<UrgencyPolicy> createPolicy(@RequestBody UrgencyPolicy policy) {
+    return ResponseEntity.ok(policyService.createPolicy(policy));
+}
+
+@GetMapping
+public ResponseEntity<List<UrgencyPolicy>> getAllPolicies() {
+    return ResponseEntity.ok(policyService.getAllPolicies());
+}
+
+@GetMapping("/{id}")
+public ResponseEntity<UrgencyPolicy> getPolicy(@PathVariable Long id) {
+    return ResponseEntity.ok(policyService.getPolicy(id));
+}
 
 
 }
