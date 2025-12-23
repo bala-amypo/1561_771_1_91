@@ -14,46 +14,62 @@ import com.example.demo.model.UrgencyPolicy;
 
 @Component
 public class TicketCategorizationEngine {
-    public List<CategorizationLog> categorize(Ticket ticket,List<Category>categories,List<CategorizationRule>rules, List<UrgencyPolicy> policies){
-        List<CategorizationLog> logs = new ArrayList<>();
 
-        rules.sort(Comparator.comparingInt(CategorizationRule::getPriority).reversed());
+public List<CategorizationLog> categorize(
+        Ticket ticket,
+        List<Category> categories,
+        List<CategorizationRule> rules,
+        List<UrgencyPolicy> policies) {
 
-        String description = ticket.getDescription().toLowerCase();
-        for(CategorizationRule rule: rules){
-            if(matches(rule, description)){
-                    Category category = rule.getCategory();
-                    ticket.setAssignedCategory(category);
+    List<CategorizationLog> logs = new ArrayList<>();
 
-                    String urgency= category.getDefaultUrgency();
+    String text = ticket.getDescription().toLowerCase();
 
-                    for(UrgencyPolicy policy: policies){
-                        if(description.contains(policy.getKeyword().toLowerCase())){
-                            urgency = policy.getUrgencyOverride();
-                            break;
-                        }
-                    }
-                    ticket.setUrgencyLevel(urgency);
-                    CategorizationLog log = new CategorizationLog(
-                        ticket,
-                        rule,
-                        rule.getKeyword(),
-                        category.getCategoryName(),
-                        urgency
-                    );
-                    logs.add(log);
+    rules.sort(Comparator.comparingInt(CategorizationRule::getPriority).reversed());
+
+    for (CategorizationRule rule : rules) {
+        if (matches(rule, text)) {
+
+            Category category = rule.getCategory();
+            ticket.setAssignedCategory(category);
+
+            String urgency = category.getDefaultUrgency();
+
+            for (UrgencyPolicy policy : policies) {
+                if (text.contains(policy.getKeyword().toLowerCase())) {
+                    urgency = policy.getUrgencyOverride();
                     break;
+                }
             }
+
+            ticket.setUrgencyLevel(urgency);
+
+            CategorizationLog log = new CategorizationLog(
+                    ticket,
+                    rule,
+                    rule.getKeyword(),
+                    category.getCategoryName(),
+                    urgency
+            );
+
+            logs.add(log);
+            break;
         }
-        return logs;
     }
-    private boolean matches(CategorizationRule rule,String text){
-        String keyword= rule.getKeyword().toLowerCase();
-        return switch (rule.getMatchType()){
-            case "EXACT" -> text.equals(keyword);
-            case "CONTAINS" -> text.contains(keyword);
-            case "REGEX" -> text.matches(keyword);
-            default -> false;
-        };
-    }
+
+    return logs;
+}
+
+private boolean matches(CategorizationRule rule, String text) {
+    String keyword = rule.getKeyword().toLowerCase();
+
+    return switch (rule.getMatchType()) {
+        case "EXACT" -> text.equals(keyword);
+        case "CONTAINS" -> text.contains(keyword);
+        case "REGEX" -> text.matches(keyword);
+        default -> false;
+    };
+}
+
+
 }
