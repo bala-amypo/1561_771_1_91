@@ -13,38 +13,45 @@ import com.example.demo.service.CategorizationRuleService;
 public class CategorizationRuleServiceImpl 
         implements CategorizationRuleService {
 
-    private final CategorizationRuleRepository categorizationRuleRepository;
+    private final CategorizationRuleRepository ruleRepository;
+    private final CategoryRepository categoryRepository;
 
     public CategorizationRuleServiceImpl(
-            CategorizationRuleRepository categorizationRuleRepository) {
-        this.categorizationRuleRepository = categorizationRuleRepository;
+            CategorizationRuleRepository ruleRepository,
+            CategoryRepository categoryRepository) {
+        this.ruleRepository = ruleRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
-    public CategorizationRule createRule(CategorizationRule rule) {
-        return categorizationRuleRepository.save(rule);
+    public CategorizationRule createRule(Long categoryId, CategorizationRule rule) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> 
+                    new ResourceNotFoundException("Category not found"));
+
+        rule.setCategory(category);
+        return ruleRepository.save(rule);
     }
 
     @Override
     public CategorizationRule getRule(Long id) {
-        return categorizationRuleRepository.findById(id)
-                .orElseThrow(() -> 
+        return ruleRepository.findById(id)
+                .orElseThrow(() ->
                     new ResourceNotFoundException("Rule not found"));
     }
 
     @Override
     public List<CategorizationRule> getAllRules() {
-        return categorizationRuleRepository.findAll();
+        return ruleRepository.findAll();
     }
 
     @Override
     public List<CategorizationRule> getRulesByCategory(Long categoryId) {
-        return categorizationRuleRepository.findByCategory_Id(categoryId);
+        return ruleRepository.findByCategory_Id(categoryId);
     }
 
     @Override
     public void deleteRule(Long id) {
-        CategorizationRule rule = getRule(id);
-        categorizationRuleRepository.delete(rule);
+        ruleRepository.delete(getRule(id));
     }
 }
