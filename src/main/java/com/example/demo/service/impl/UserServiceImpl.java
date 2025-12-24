@@ -23,14 +23,17 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
-    public User register(User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new BadRequestException("Email already in use");
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+   @Override
+public User register(User user) {
+    if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+        throw new ConflictException("Email already in use");
     }
+
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    user.setRole("USER");
+    return userRepository.save(user);
+}
+
 
     @Override
     public User getById(Long id) {
