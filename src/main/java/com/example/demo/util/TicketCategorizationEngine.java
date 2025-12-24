@@ -2,14 +2,11 @@ package com.example.demo.util;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
 import com.example.demo.model.*;
 
-@Component
 public class TicketCategorizationEngine {
 
-    public boolean categorize(
+    public static void categorize(
             Ticket ticket,
             List<Category> categories,
             List<CategorizationRule> rules,
@@ -17,39 +14,42 @@ public class TicketCategorizationEngine {
             List<CategorizationLog> logs
     ) {
 
-        boolean matched = false;
+        Category matchedCategory = null;
 
-        // 🔹 Rule-based category assignment
+        // 1️⃣ Match category using rules
         for (CategorizationRule rule : rules) {
-            if (ticket.getDescription() != null &&
-                ticket.getDescription().toLowerCase()
+            if (ticket.getDescription().toLowerCase()
                     .contains(rule.getKeyword().toLowerCase())) {
 
-                ticket.setAssignedCategory(rule.getCategory());
-                ticket.setUrgencyLevel(
-                        rule.getCategory().getDefaultUrgency()
-                );
-
-                matched = true;
+                matchedCategory = rule.getCategory();
                 break;
             }
         }
 
-        // 🔹 Policy-based urgency override
-        for (UrgencyPolicy policy : policies) {
-            if (ticket.getDescription() != null &&
-                ticket.getDescription().toLowerCase()
-                    .contains(policy.getKeyword().toLowerCase())) {
+        if (matchedCategory == null && !categories.isEmpty()) {
+            matchedCategory = categories.get(0);
+        }
 
-                ticket.setUrgencyLevel(policy.getUrgencyOverride());
+        ticket.setAssignedCategory(matchedCategory);
+
+        // 2️⃣ Determine urgency
+        String urgency = "LOW";
+
+        for (UrgencyPolicy policy : policies) {
+            if (ticket.getDescription().toLowerCase()
+                    .contains(policy.getKeyword().toLowerCase())) {
+                urgency = policy.getUrgencyOverride();
+                break;
             }
         }
 
-        // 🔹 Default urgency if nothing matched
-        if (ticket.getUrgencyLevel() == null) {
-            ticket.setUrgencyLevel("LOW");
+        if (urgency == null && matchedCategory != null) {
+            urgency = matchedCategory.getDefaultUrgency();
         }
 
-        return matched;
+        ticket.setUrgencyLevel(urgency);
+
+        // ❌ ENGINE MUST NOT ADD LOGS
+        // ✅ logs handled ONLY by service layer
     }
 }
