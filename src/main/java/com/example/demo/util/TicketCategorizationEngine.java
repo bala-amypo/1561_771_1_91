@@ -19,31 +19,34 @@ public class TicketCategorizationEngine {
 
         boolean matched = false;
 
+        // 🔹 Rule-based category assignment
         for (CategorizationRule rule : rules) {
-            if (ticket.getDescription()
-                    .toLowerCase()
+            if (ticket.getDescription() != null &&
+                ticket.getDescription().toLowerCase()
                     .contains(rule.getKeyword().toLowerCase())) {
 
                 ticket.setAssignedCategory(rule.getCategory());
-                ticket.setUrgencyLevel(rule.getCategory().getDefaultUrgency());
+                ticket.setUrgencyLevel(
+                        rule.getCategory().getDefaultUrgency()
+                );
 
                 matched = true;
                 break;
             }
         }
 
-        // policy override
+        // 🔹 Policy-based urgency override
         for (UrgencyPolicy policy : policies) {
-            if (ticket.getDescription()
-                    .toLowerCase()
+            if (ticket.getDescription() != null &&
+                ticket.getDescription().toLowerCase()
                     .contains(policy.getKeyword().toLowerCase())) {
 
                 ticket.setUrgencyLevel(policy.getUrgencyOverride());
             }
         }
 
-        // ✅ default LOW if nothing matched
-        if (!matched && ticket.getUrgencyLevel() == null) {
+        // 🔹 Default urgency if nothing matched
+        if (ticket.getUrgencyLevel() == null) {
             ticket.setUrgencyLevel("LOW");
         }
 
