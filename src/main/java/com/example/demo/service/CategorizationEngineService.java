@@ -7,9 +7,9 @@ import com.example.demo.model.Ticket;
 
 public interface CategorizationEngineService {
 
-Ticket categorizeTicket(Long ticketId);
+    Ticket categorizeTicket(Long ticketId);
 
-List<CategorizationLog> getLogsForTicket(Long ticketId);
+    List<CategorizationLog> getLogsForTicket(Long ticketId);
 
-CategorizationLog getLog(Long id);
+    CategorizationLog getLog(Long id);
 }

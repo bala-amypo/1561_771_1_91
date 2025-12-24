@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Ticket;
 import com.example.demo.repository.TicketRepository;
 import com.example.demo.service.TicketService;
@@ -24,7 +25,8 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket getTicket(Long id) {
-        return ticketRepository.findById(id).orElse(null);
+        return ticketRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket not found"));
     }
 
     @Override
