@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.exception.ResourceNotFoundException;
@@ -28,7 +29,8 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
     private final UrgencyPolicyRepository policyRepository;
     private final CategorizationLogRepository logRepository;
 
-    // ✅ Constructor used by SPRING
+    // ✅ THIS constructor is for SPRING
+    @Autowired
     public CategorizationEngineServiceImpl(
             TicketRepository ticketRepository,
             CategoryRepository categoryRepository,
@@ -43,7 +45,7 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
         this.logRepository = logRepository;
     }
 
-    // ✅ Constructor used by TESTS (engine intentionally ignored)
+    // ✅ THIS constructor is ONLY for TESTS (engine ignored)
     public CategorizationEngineServiceImpl(
             TicketRepository ticketRepository,
             CategoryRepository categoryRepository,
@@ -71,7 +73,7 @@ public class CategorizationEngineServiceImpl implements CategorizationEngineServ
         List<UrgencyPolicy> policies = policyRepository.findAll();
         List<CategorizationLog> logs = new ArrayList<>();
 
-        // ✅ Static utility engine (NOT a Spring bean)
+        // static utility engine (NOT a Spring bean)
         TicketCategorizationEngine.categorize(
                 ticket, categories, rules, policies, logs
         );
