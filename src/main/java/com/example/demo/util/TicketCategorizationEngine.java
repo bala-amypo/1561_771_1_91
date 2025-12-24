@@ -2,14 +2,20 @@ package com.example.demo.util;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import com.example.demo.model.Category;
+import com.example.demo.model.CategorizationLog;
+import com.example.demo.model.CategorizationRule;
+import com.example.demo.model.Ticket;
+import com.example.demo.model.UrgencyLevel;
+import com.example.demo.model.UrgencyPolicy;
 
-import com.example.demo.model.*;
-
-@Component
 public class TicketCategorizationEngine {
 
-    public Urgency categorize(
+    /**
+     * Core categorization logic.
+     * This class MUST be usable independently (no Spring, no repositories).
+     */
+    public UrgencyLevel categorize(
             Ticket ticket,
             List<Category> categories,
             List<CategorizationRule> rules,
@@ -17,30 +23,45 @@ public class TicketCategorizationEngine {
             List<CategorizationLog> logs
     ) {
 
-        Urgency finalUrgency = Urgency.LOW;
-        String description = ticket.getDescription().toLowerCase();
+        // ✅ DEFAULT (required by tests)
+        UrgencyLevel finalUrgency = UrgencyLevel.LOW;
 
-        // RULE BASED
-        for (CategorizationRule rule : rules) {
-            if (description.contains(rule.getKeyword().toLowerCase())) {
-                finalUrgency = Urgency.HIGH;
+        String description =
+                ticket.getDescription() == null
+                        ? ""
+                        : ticket.getDescription().toLowerCase();
 
-                CategorizationLog log = new CategorizationLog();
-                log.setTicket(ticket);
-                log.setAppliedRule(rule);
-                logs.add(log);
-                break;
-            }
-        }
-
-        // POLICY OVERRIDE
+        /* -------------------------------------------------
+           1. APPLY URGENCY POLICIES (HIGHEST PRIORITY)
+           ------------------------------------------------- */
         for (UrgencyPolicy policy : policies) {
-            if (description.contains(policy.getKeyword().toLowerCase())) {
+            if (policy.getKeyword() != null &&
+                description.contains(policy.getKeyword().toLowerCase())) {
+
                 finalUrgency = policy.getUrgencyOverride();
+                return finalUrgency; // override immediately
+            }
+        }
+
+        /* -------------------------------------------------
+           2. APPLY CATEGORIZATION RULES
+           ------------------------------------------------- */
+        for (CategorizationRule rule : rules) {
+            if (rule.getKeyword() != null &&
+                description.contains(rule.getKeyword().toLowerCase())) {
+
+                if (rule.getCategory() != null &&
+                    rule.getCategory().getDefaultUrgency() != null) {
+
+                    finalUrgency = rule.getCategory().getDefaultUrgency();
+                }
                 break;
             }
         }
 
+        /* -------------------------------------------------
+           3. DEFAULT FALLBACK (LOW)
+           ------------------------------------------------- */
         return finalUrgency;
     }
 }
