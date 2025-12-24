@@ -5,9 +5,11 @@ public class AuthRequest {
     private String email;
     private String password;
 
+    // No-args constructor
     public AuthRequest() {
     }
 
+    // All-args constructor
     public AuthRequest(String email, String password) {
         this.email = email;
         this.password = password;
