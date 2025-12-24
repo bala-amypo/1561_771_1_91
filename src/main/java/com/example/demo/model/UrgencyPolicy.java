@@ -26,14 +26,27 @@ public class UrgencyPolicy {
     @ManyToMany(mappedBy = "urgencyPolicies")
     private Set<Category> categories = new HashSet<>();
 
+    // ✅ No-args constructor
     public UrgencyPolicy() {}
 
+    // ✅ Auto timestamp
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // ✅ REQUIRED GETTERS (TESTS + ENGINE)
+    // =========================
+    // ✅ REQUIRED GETTERS
+    // =========================
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getPolicyName() {
+        return policyName;
+    }
+
     public String getKeyword() {
         return keyword;
     }
@@ -42,11 +55,26 @@ public class UrgencyPolicy {
         return urgencyOverride;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public Set<Category> getCategories() {
         return categories;
     }
 
-    // Optional setters (safe to include)
+    // =========================
+    // ✅ REQUIRED SETTERS
+    // =========================
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setPolicyName(String policyName) {
+        this.policyName = policyName;
+    }
+
     public void setKeyword(String keyword) {
         this.keyword = keyword;
     }

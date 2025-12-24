@@ -32,6 +32,7 @@ public class Category {
     )
     private Set<UrgencyPolicy> urgencyPolicies = new HashSet<>();
 
+    // ✅ Constructors
     public Category() {}
 
     public Category(String categoryName, String defaultUrgency) {
@@ -39,27 +40,66 @@ public class Category {
         this.defaultUrgency = defaultUrgency;
     }
 
+    // ✅ Auto timestamp
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // ✅ prevents duplicates
+    // =========================
+    // ✅ BUSINESS METHOD
+    // =========================
+
     public void addUrgencyPolicy(UrgencyPolicy policy) {
         this.urgencyPolicies.add(policy);
         policy.getCategories().add(this);
     }
 
-    // getters & setters (ALL required by tests)
+    // =========================
+    // ✅ GETTERS
+    // =========================
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getCategoryName() { return categoryName; }
-    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public String getCategoryName() {
+        return categoryName;
+    }
 
-    public String getDefaultUrgency() { return defaultUrgency; }
-    public void setDefaultUrgency(String defaultUrgency) { this.defaultUrgency = defaultUrgency; }
+    public String getDescription() {
+        return description;
+    }
 
-    public Set<UrgencyPolicy> getUrgencyPolicies() { return urgencyPolicies; }
+    public String getDefaultUrgency() {
+        return defaultUrgency;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public Set<UrgencyPolicy> getUrgencyPolicies() {
+        return urgencyPolicies;
+    }
+
+    // =========================
+    // ✅ SETTERS
+    // =========================
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDefaultUrgency(String defaultUrgency) {
+        this.defaultUrgency = defaultUrgency;
+    }
 }
