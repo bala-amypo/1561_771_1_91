@@ -1,15 +1,20 @@
 package com.example.demo.util;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.example.demo.model.*;
+import com.example.demo.model.CategorizationLog;
+import com.example.demo.model.CategorizationRule;
+import com.example.demo.model.Category;
+import com.example.demo.model.Ticket;
+import com.example.demo.model.UrgencyPolicy;
 
-@Component
+@Component   // 🔥 THIS IS THE FIX
 public class TicketCategorizationEngine {
 
-    public boolean categorize(
+    public void categorize(
             Ticket ticket,
             List<Category> categories,
             List<CategorizationRule> rules,
@@ -17,39 +22,63 @@ public class TicketCategorizationEngine {
             List<CategorizationLog> logs
     ) {
 
-        boolean matched = false;
+        // Default urgency
+        ticket.setUrgencyLevel("LOW");
 
-        // 🔹 Rule-based category assignment
-        for (CategorizationRule rule : rules) {
-            if (ticket.getDescription() != null &&
-                ticket.getDescription().toLowerCase()
-                    .contains(rule.getKeyword().toLowerCase())) {
+        // Find highest priority rule
+        CategorizationRule matchedRule = rules.stream()
+                .sorted(Comparator.comparingInt(CategorizationRule::getPriority).reversed())
+                .filter(rule -> matches(ticket, rule))
+                .findFirst()
+                .orElse(null);
 
-                ticket.setAssignedCategory(rule.getCategory());
-                ticket.setUrgencyLevel(
-                        rule.getCategory().getDefaultUrgency()
-                );
+        if (matchedRule != null) {
+            Category category = matchedRule.getCategory();
 
-                matched = true;
-                break;
-            }
+            ticket.setAssignedCategory(category);
+            ticket.setUrgencyLevel(category.getDefaultUrgency());
+
+            CategorizationLog log = new CategorizationLog();
+            log.setTicket(ticket);
+            log.setAppliedRule(matchedRule);
+            log.setMatchedKeyword(matchedRule.getKeyword());
+            log.setAssignedCategory(category.getCategoryName());
+            log.setAssignedUrgency(ticket.getUrgencyLevel());
+
+            logs.add(log);
         }
 
-        // 🔹 Policy-based urgency override
+        // Apply policy override
         for (UrgencyPolicy policy : policies) {
             if (ticket.getDescription() != null &&
                 ticket.getDescription().toLowerCase()
-                    .contains(policy.getKeyword().toLowerCase())) {
+                        .contains(policy.getKeyword().toLowerCase())) {
 
                 ticket.setUrgencyLevel(policy.getUrgencyOverride());
+
+                if (!logs.isEmpty()) {
+                    logs.get(logs.size() - 1)
+                        .setAssignedUrgency(ticket.getUrgencyLevel());
+                }
             }
         }
+    }
 
-        // 🔹 Default urgency if nothing matched
-        if (ticket.getUrgencyLevel() == null) {
-            ticket.setUrgencyLevel("LOW");
+    private boolean matches(Ticket ticket, CategorizationRule rule) {
+        String keyword = rule.getKeyword().toLowerCase();
+
+        String title = ticket.getTitle() == null ? "" : ticket.getTitle().toLowerCase();
+        String desc  = ticket.getDescription() == null ? "" : ticket.getDescription().toLowerCase();
+
+        switch (rule.getMatchType()) {
+            case "EXACT":
+                return title.equals(keyword) || desc.equals(keyword);
+            case "CONTAINS":
+                return title.contains(keyword) || desc.contains(keyword);
+            case "REGEX":
+                return title.matches(keyword) || desc.matches(keyword);
+            default:
+                return false;
         }
-
-        return matched;
     }
 }
