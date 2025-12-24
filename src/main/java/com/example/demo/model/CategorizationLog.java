@@ -2,25 +2,15 @@ package com.example.demo.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "categorization_logs")
 public class CategorizationLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(optional = false)
-    private Ticket ticket;
-
-    @ManyToOne(optional = false)
-    private CategorizationRule appliedRule;
 
     private String matchedKeyword;
     private String assignedCategory;
@@ -28,16 +18,18 @@ public class CategorizationLog {
 
     private LocalDateTime loggedAt;
 
-    public CategorizationLog() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "ticket_id")
+    private Ticket ticket;
 
-    public CategorizationLog(
-            Ticket ticket,
-            CategorizationRule appliedRule,
-            String matchedKeyword,
-            String assignedCategory,
-            String assignedUrgency) {
+    @ManyToOne
+    @JoinColumn(name = "rule_id")
+    private CategorizationRule appliedRule;
 
+    public CategorizationLog() {}
+
+    public CategorizationLog(Ticket ticket, CategorizationRule appliedRule,
+                             String matchedKeyword, String assignedCategory, String assignedUrgency) {
         this.ticket = ticket;
         this.appliedRule = appliedRule;
         this.matchedKeyword = matchedKeyword;
@@ -46,55 +38,28 @@ public class CategorizationLog {
     }
 
     @PrePersist
-    protected void prePersist() {
+    public void prePersist() {
         this.loggedAt = LocalDateTime.now();
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Ticket getTicket() {
-        return ticket;
-    }
+    public String getMatchedKeyword() { return matchedKeyword; }
+    public void setMatchedKeyword(String matchedKeyword) { this.matchedKeyword = matchedKeyword; }
 
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
+    public String getAssignedCategory() { return assignedCategory; }
+    public void setAssignedCategory(String assignedCategory) { this.assignedCategory = assignedCategory; }
 
-    public CategorizationRule getAppliedRule() {
-        return appliedRule;
-    }
+    public String getAssignedUrgency() { return assignedUrgency; }
+    public void setAssignedUrgency(String assignedUrgency) { this.assignedUrgency = assignedUrgency; }
 
-    public void setAppliedRule(CategorizationRule appliedRule) {
-        this.appliedRule = appliedRule;
-    }
+    public LocalDateTime getLoggedAt() { return loggedAt; }
+    public void setLoggedAt(LocalDateTime loggedAt) { this.loggedAt = loggedAt; }
 
-    public String getMatchedKeyword() {
-        return matchedKeyword;
-    }
+    public Ticket getTicket() { return ticket; }
+    public void setTicket(Ticket ticket) { this.ticket = ticket; }
 
-    public void setMatchedKeyword(String matchedKeyword) {
-        this.matchedKeyword = matchedKeyword;
-    }
-
-    public String getAssignedCategory() {
-        return assignedCategory;
-    }
-
-    public void setAssignedCategory(String assignedCategory) {
-        this.assignedCategory = assignedCategory;
-    }
-
-    public String getAssignedUrgency() {
-        return assignedUrgency;
-    }
-
-    public void setAssignedUrgency(String assignedUrgency) {
-        this.assignedUrgency = assignedUrgency;
-    }
-
-    public LocalDateTime getLoggedAt() {
-        return loggedAt;
-    }
+    public CategorizationRule getAppliedRule() { return appliedRule; }
+    public void setAppliedRule(CategorizationRule appliedRule) { this.appliedRule = appliedRule; }
 }

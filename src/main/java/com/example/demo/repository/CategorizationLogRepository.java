@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.demo.model.CategorizationLog;
 
-public interface CategorizationLogRepository extends JpaRepository<CategorizationLog, Long> {
+public interface CategorizationLogRepository
+        extends JpaRepository<CategorizationLog, Long> {
 
     List<CategorizationLog> findByTicketId(Long ticketId);
 

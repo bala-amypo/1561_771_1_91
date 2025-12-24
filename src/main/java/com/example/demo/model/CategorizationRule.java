@@ -2,8 +2,6 @@ package com.example.demo.model;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
 
 @Entity
@@ -14,74 +12,47 @@ public class CategorizationRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String keyword;
-
-    @Column(nullable = false)
     private String matchType;
+    private Integer priority;
 
-    @Column(nullable = false)
-    private int priority;
+    private LocalDateTime createdAt;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    private LocalDateTime createdAt;
+    public CategorizationRule() {}
 
-    public CategorizationRule() {
-    }
-
-    public CategorizationRule(String keyword, String matchType, int priority, Category category) {
+    public CategorizationRule(String keyword, String matchType, Integer priority) {
         this.keyword = keyword;
         this.matchType = matchType;
         this.priority = priority;
-        this.category = category;
     }
 
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
+        if (this.priority == null) {
+            this.priority = 1;
+        }
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getKeyword() {
-        return keyword;
-    }
+    public String getKeyword() { return keyword; }
+    public void setKeyword(String keyword) { this.keyword = keyword; }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
+    public String getMatchType() { return matchType; }
+    public void setMatchType(String matchType) { this.matchType = matchType; }
 
-    public String getMatchType() {
-        return matchType;
-    }
+    public Integer getPriority() { return priority; }
+    public void setPriority(Integer priority) { this.priority = priority; }
 
-    public void setMatchType(String matchType) {
-        this.matchType = matchType;
-    }
+    public Category getCategory() { return category; }
+    public void setCategory(Category category) { this.category = category; }
 
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
