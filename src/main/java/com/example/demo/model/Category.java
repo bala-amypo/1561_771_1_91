@@ -1,8 +1,8 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -22,11 +22,7 @@ public class Category {
     @Column(nullable = false)
     private String defaultUrgency;
 
-    @OneToMany(mappedBy = "assignedCategory")
-    private List<Ticket> tickets = new ArrayList<>();
-
-    @OneToMany(mappedBy = "category")
-    private List<CategorizationRule> rules = new ArrayList<>();
+    private LocalDateTime createdAt;
 
     @ManyToMany
     @JoinTable(
@@ -34,95 +30,36 @@ public class Category {
         joinColumns = @JoinColumn(name = "category_id"),
         inverseJoinColumns = @JoinColumn(name = "policy_id")
     )
-    private List<UrgencyPolicy> urgencyPolicies = new ArrayList<>();
+    private Set<UrgencyPolicy> urgencyPolicies = new HashSet<>();
 
-    private LocalDateTime createdAt;
+    public Category() {}
 
-    /* =======================
-       Constructors
-       ======================= */
-
-    public Category() {
-    }
-
-    public Category(String categoryName, String description, String defaultUrgency) {
+    public Category(String categoryName, String defaultUrgency) {
         this.categoryName = categoryName;
-        this.description = description;
         this.defaultUrgency = defaultUrgency;
     }
-
-    /* =======================
-       Lifecycle callback
-       ======================= */
 
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-    /* =======================
-       Getters and Setters
-       ======================= */
-
-    public Long getId() {
-        return id;
+    // ✅ prevents duplicates
+    public void addUrgencyPolicy(UrgencyPolicy policy) {
+        this.urgencyPolicies.add(policy);
+        policy.getCategories().add(this);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // getters & setters (ALL required by tests)
 
-    public String getCategoryName() {
-        return categoryName;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDefaultUrgency() { return defaultUrgency; }
+    public void setDefaultUrgency(String defaultUrgency) { this.defaultUrgency = defaultUrgency; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    // 🔥 REQUIRED BY ENGINE + TESTS
-    public String getDefaultUrgency() {
-        return defaultUrgency;
-    }
-
-    public void setDefaultUrgency(String defaultUrgency) {
-        this.defaultUrgency = defaultUrgency;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
-    }
-
-    public List<CategorizationRule> getRules() {
-        return rules;
-    }
-
-    public void setRules(List<CategorizationRule> rules) {
-        this.rules = rules;
-    }
-
-    // 🔥 REQUIRED BY TESTS
-    public List<UrgencyPolicy> getUrgencyPolicies() {
-        return urgencyPolicies;
-    }
-
-    public void setUrgencyPolicies(List<UrgencyPolicy> urgencyPolicies) {
-        this.urgencyPolicies = urgencyPolicies;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+    public Set<UrgencyPolicy> getUrgencyPolicies() { return urgencyPolicies; }
 }
