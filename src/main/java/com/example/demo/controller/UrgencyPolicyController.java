@@ -3,12 +3,7 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.model.UrgencyPolicy;
 import com.example.demo.service.UrgencyPolicyService;
@@ -17,26 +12,24 @@ import com.example.demo.service.UrgencyPolicyService;
 @RequestMapping("/api/policies")
 public class UrgencyPolicyController {
 
-private final UrgencyPolicyService policyService;
+    private final UrgencyPolicyService policyService;
 
-public UrgencyPolicyController(UrgencyPolicyService policyService) {
-    this.policyService = policyService;
-}
+    public UrgencyPolicyController(UrgencyPolicyService policyService) {
+        this.policyService = policyService;
+    }
 
-@PostMapping
-public ResponseEntity<UrgencyPolicy> createPolicy(@RequestBody UrgencyPolicy policy) {
-    return ResponseEntity.ok(policyService.createPolicy(policy));
-}
+    @PostMapping
+    public ResponseEntity<UrgencyPolicy> create(@RequestBody UrgencyPolicy policy) {
+        return ResponseEntity.ok(policyService.createPolicy(policy));
+    }
 
-@GetMapping
-public ResponseEntity<List<UrgencyPolicy>> getAllPolicies() {
-    return ResponseEntity.ok(policyService.getAllPolicies());
-}
+    @GetMapping
+    public ResponseEntity<List<UrgencyPolicy>> getAll() {
+        return ResponseEntity.ok(policyService.getAllPolicies());
+    }
 
-@GetMapping("/{id}")
-public ResponseEntity<UrgencyPolicy> getPolicy(@PathVariable Long id) {
-    return ResponseEntity.ok(policyService.getPolicy(id));
-}
-
-
+    @GetMapping("/{id}")
+    public ResponseEntity<UrgencyPolicy> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(policyService.getPolicy(id));
+    }
 }
