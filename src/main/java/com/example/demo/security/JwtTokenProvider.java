@@ -18,7 +18,7 @@ public class JwtTokenProvider {
     private static final String SECRET =
             "my-secret-key-12345678901234567890";
     private static final long VALIDITY =
-            3600000; // 1 hour
+            3600000; 
 
     private final SecretKey key =
             Keys.hmacShaKeyFor(SECRET.getBytes());

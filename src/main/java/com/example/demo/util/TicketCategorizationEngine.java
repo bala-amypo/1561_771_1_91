@@ -22,10 +22,10 @@ public class TicketCategorizationEngine {
             List<CategorizationLog> logs
     ) {
 
-        // Default urgency
+        
         ticket.setUrgencyLevel("LOW");
 
-        // Find highest priority rule
+        
         CategorizationRule matchedRule = rules.stream()
                 .sorted(Comparator.comparingInt(CategorizationRule::getPriority).reversed())
                 .filter(rule -> matches(ticket, rule))
@@ -48,7 +48,7 @@ public class TicketCategorizationEngine {
             logs.add(log);
         }
 
-        // Apply policy override
+        
         for (UrgencyPolicy policy : policies) {
             if (ticket.getDescription() != null &&
                 ticket.getDescription().toLowerCase()
