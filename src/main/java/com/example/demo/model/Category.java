@@ -32,7 +32,7 @@ public class Category {
     )
     private Set<UrgencyPolicy> urgencyPolicies = new HashSet<>();
 
-    // ✅ Constructors
+    
     public Category() {}
 
     public Category(String categoryName, String defaultUrgency) {
