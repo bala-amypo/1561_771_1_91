@@ -10,6 +10,7 @@ import com.example.demo.service.TicketService;
 
 @RestController
 @RequestMapping("/api/tickets")
+
 public class TicketController {
 
     private final TicketService ticketService;
