@@ -40,24 +40,20 @@ public class Category {
         this.defaultUrgency = defaultUrgency;
     }
 
-    // ✅ Auto timestamp
+    
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // =========================
-    // ✅ BUSINESS METHOD
-    // =========================
+   
 
     public void addUrgencyPolicy(UrgencyPolicy policy) {
         this.urgencyPolicies.add(policy);
         policy.getCategories().add(this);
     }
 
-    // =========================
-    // ✅ GETTERS
-    // =========================
+
 
     public Long getId() {
         return id;
