@@ -11,7 +11,7 @@ import com.example.demo.model.Category;
 import com.example.demo.model.Ticket;
 import com.example.demo.model.UrgencyPolicy;
 
-@Component   // 🔥 THIS IS THE FIX
+@Component   
 public class TicketCategorizationEngine {
 
     public void categorize(
