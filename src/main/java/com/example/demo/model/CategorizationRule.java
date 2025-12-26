@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -19,6 +21,7 @@ public class CategorizationRule {
     private LocalDateTime createdAt;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "category_id")
     private Category category;
 

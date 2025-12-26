@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -25,6 +27,7 @@ public class Category {
     private LocalDateTime createdAt;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
         name = "category_urgency_policy",
         joinColumns = @JoinColumn(name = "category_id"),
@@ -32,7 +35,7 @@ public class Category {
     )
     private Set<UrgencyPolicy> urgencyPolicies = new HashSet<>();
 
-    
+    // ✅ Constructors
     public Category() {}
 
     public Category(String categoryName, String defaultUrgency) {
@@ -40,20 +43,24 @@ public class Category {
         this.defaultUrgency = defaultUrgency;
     }
 
-    
+    // ✅ Auto timestamp
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-   
+    // =========================
+    // ✅ BUSINESS METHOD
+    // =========================
 
     public void addUrgencyPolicy(UrgencyPolicy policy) {
         this.urgencyPolicies.add(policy);
         policy.getCategories().add(this);
     }
 
-
+    // =========================
+    // ✅ GETTERS
+    // =========================
 
     public Long getId() {
         return id;

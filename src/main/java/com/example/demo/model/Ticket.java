@@ -3,6 +3,8 @@ package com.example.demo.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -22,14 +24,17 @@ public class Ticket {
     private LocalDateTime createdAt;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "category_id")
     private Category assignedCategory;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "ticket")
+    @JsonIgnore
     private List<CategorizationLog> logs;
 
     public Ticket() {}
