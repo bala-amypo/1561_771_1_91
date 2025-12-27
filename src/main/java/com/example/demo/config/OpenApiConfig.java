@@ -51,10 +51,10 @@ public class OpenApiConfig {
                         new Server().url("https://9085.pro604cr.amypo.ai")
                 ))
 
-                // // 🔒 Apply security globally
-                // .addSecurityItem(
-                //         new SecurityRequirement().addList("BearerAuth")
-                // )
+                // 🔒 Apply security globally
+                .addSecurityItem(
+                        new SecurityRequirement().addList("BearerAuth")
+                )
 
                 // 🔑 Register security scheme
                 .components(
