@@ -21,7 +21,7 @@ public class CategorizationRule {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JsonIgnore
+    // @JsonIgnore
     @JoinColumn(name = "category_id")
     private Category category;
 

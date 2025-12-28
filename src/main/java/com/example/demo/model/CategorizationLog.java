@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -20,16 +22,22 @@ public class CategorizationLog {
 
     @ManyToOne
     @JoinColumn(name = "ticket_id")
+    @JsonIgnore   // 🔥 prevents infinite recursion
     private Ticket ticket;
 
     @ManyToOne
     @JoinColumn(name = "rule_id")
     private CategorizationRule appliedRule;
 
+    // ✅ No-args constructor
     public CategorizationLog() {}
 
-    public CategorizationLog(Ticket ticket, CategorizationRule appliedRule,
-                             String matchedKeyword, String assignedCategory, String assignedUrgency) {
+    // ✅ All-args constructor
+    public CategorizationLog(Ticket ticket,
+                             CategorizationRule appliedRule,
+                             String matchedKeyword,
+                             String assignedCategory,
+                             String assignedUrgency) {
         this.ticket = ticket;
         this.appliedRule = appliedRule;
         this.matchedKeyword = matchedKeyword;
@@ -42,24 +50,61 @@ public class CategorizationLog {
         this.loggedAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // ===== GETTERS & SETTERS =====
 
-    public String getMatchedKeyword() { return matchedKeyword; }
-    public void setMatchedKeyword(String matchedKeyword) { this.matchedKeyword = matchedKeyword; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getAssignedCategory() { return assignedCategory; }
-    public void setAssignedCategory(String assignedCategory) { this.assignedCategory = assignedCategory; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getAssignedUrgency() { return assignedUrgency; }
-    public void setAssignedUrgency(String assignedUrgency) { this.assignedUrgency = assignedUrgency; }
+    public String getMatchedKeyword() {
+        return matchedKeyword;
+    }
 
-    public LocalDateTime getLoggedAt() { return loggedAt; }
-    public void setLoggedAt(LocalDateTime loggedAt) { this.loggedAt = loggedAt; }
+    public void setMatchedKeyword(String matchedKeyword) {
+        this.matchedKeyword = matchedKeyword;
+    }
 
-    public Ticket getTicket() { return ticket; }
-    public void setTicket(Ticket ticket) { this.ticket = ticket; }
+    public String getAssignedCategory() {
+        return assignedCategory;
+    }
 
-    public CategorizationRule getAppliedRule() { return appliedRule; }
-    public void setAppliedRule(CategorizationRule appliedRule) { this.appliedRule = appliedRule; }
+    public void setAssignedCategory(String assignedCategory) {
+        this.assignedCategory = assignedCategory;
+    }
+
+    public String getAssignedUrgency() {
+        return assignedUrgency;
+    }
+
+    public void setAssignedUrgency(String assignedUrgency) {
+        this.assignedUrgency = assignedUrgency;
+    }
+
+    public LocalDateTime getLoggedAt() {
+        return loggedAt;
+    }
+
+    public void setLoggedAt(LocalDateTime loggedAt) {
+        this.loggedAt = loggedAt;
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+
+    public CategorizationRule getAppliedRule() {
+        return appliedRule;
+    }
+
+    public void setAppliedRule(CategorizationRule appliedRule) {
+        this.appliedRule = appliedRule;
+    }
 }

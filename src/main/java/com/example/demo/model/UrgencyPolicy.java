@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,46 +15,63 @@ public class UrgencyPolicy {
     private Long id;
 
     private String policyName;
-
-    @Column(nullable = false)
     private String keyword;
-
-    @Column(nullable = false)
     private String urgencyOverride;
 
     private LocalDateTime createdAt;
 
     @ManyToMany(mappedBy = "urgencyPolicies")
     @JsonIgnore
-    private Set<Category> categories = new HashSet<>();
+    private Set<Category> categories;
 
-    // ✅ No-args constructor
-    public UrgencyPolicy() {}
+    // ✅ No-args constructor (REQUIRED by JPA)
+    public UrgencyPolicy() {
+    }
 
-    // ✅ Auto timestamp
+    // ✅ Parameterized constructor (useful for creating objects)
+    public UrgencyPolicy(String policyName, String keyword, String urgencyOverride) {
+        this.policyName = policyName;
+        this.keyword = keyword;
+        this.urgencyOverride = urgencyOverride;
+    }
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // =========================
-    // ✅ REQUIRED GETTERS
-    // =========================
+    // ===== GETTERS & SETTERS =====
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getPolicyName() {
         return policyName;
     }
 
+    public void setPolicyName(String policyName) {
+        this.policyName = policyName;
+    }
+
     public String getKeyword() {
         return keyword;
     }
 
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
     public String getUrgencyOverride() {
         return urgencyOverride;
+    }
+
+    public void setUrgencyOverride(String urgencyOverride) {
+        this.urgencyOverride = urgencyOverride;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -66,23 +82,7 @@ public class UrgencyPolicy {
         return categories;
     }
 
-    // =========================
-    // ✅ REQUIRED SETTERS
-    // =========================
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setPolicyName(String policyName) {
-        this.policyName = policyName;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
-    public void setUrgencyOverride(String urgencyOverride) {
-        this.urgencyOverride = urgencyOverride;
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }
