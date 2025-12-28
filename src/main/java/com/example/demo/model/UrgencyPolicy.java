@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,15 +21,16 @@ public class UrgencyPolicy {
 
     private LocalDateTime createdAt;
 
+    // 🔥 MUST be initialized (this fixes BOTH failed tests)
     @ManyToMany(mappedBy = "urgencyPolicies")
     @JsonIgnore
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
-    // ✅ No-args constructor (REQUIRED by JPA)
+    // ✅ No-args constructor
     public UrgencyPolicy() {
     }
 
-    // ✅ Parameterized constructor (useful for creating objects)
+    // ✅ Parameterized constructor
     public UrgencyPolicy(String policyName, String keyword, String urgencyOverride) {
         this.policyName = policyName;
         this.keyword = keyword;
