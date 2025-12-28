@@ -19,21 +19,21 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-    // ✅ USER can raise ticket
+    
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Ticket> create(@RequestBody Ticket ticket) {
         return ResponseEntity.ok(ticketService.createTicket(ticket));
     }
 
-    // ✅ ADMIN can view all tickets
+    
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Ticket>> getAll() {
         return ResponseEntity.ok(ticketService.getAllTickets());
     }
 
-    // ✅ ADMIN can view any ticket
+    
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Ticket> getById(@PathVariable Long id) {

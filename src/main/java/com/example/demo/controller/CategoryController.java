@@ -19,21 +19,21 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    // ✅ ADMIN only – create category
+
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> create(@RequestBody Category category) {
         return ResponseEntity.ok(categoryService.createCategory(category));
     }
 
-    // ✅ ADMIN only – get all categories
+
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Category>> getAll() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
-    // ✅ ADMIN only – get category by id
+    
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> getById(@PathVariable Long id) {
