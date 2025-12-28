@@ -30,10 +30,10 @@ public class Category {
     @JsonIgnore
     private Set<UrgencyPolicy> urgencyPolicies = new HashSet<>();
 
-    // ✅ No-args constructor
+    
     public Category() {}
 
-    // ✅ Parameterized constructor
+    
     public Category(String categoryName, String defaultUrgency) {
         this.categoryName = categoryName;
         this.defaultUrgency = defaultUrgency;
@@ -44,7 +44,7 @@ public class Category {
         this.createdAt = LocalDateTime.now();
     }
 
-    // ===== GETTERS & SETTERS =====
+
 
     public Long getId() {
         return id;

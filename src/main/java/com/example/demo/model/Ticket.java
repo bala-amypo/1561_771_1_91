@@ -32,10 +32,9 @@ public class Ticket {
     @OneToMany(mappedBy = "ticket")
     private List<CategorizationLog> logs;
 
-    // ✅ No-args constructor
     public Ticket() {}
 
-    // ✅ Parameterized constructor
+
     public Ticket(String title, String description, String location, String createdBy) {
         this.title = title;
         this.description = description;
@@ -51,7 +50,7 @@ public class Ticket {
         }
     }
 
-    // ===== GETTERS & SETTERS =====
+    
 
     public Long getId() {
         return id;
