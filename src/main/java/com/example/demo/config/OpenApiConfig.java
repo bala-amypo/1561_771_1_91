@@ -38,7 +38,7 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
 
-        // 🔐 JWT Security Scheme
+        
         SecurityScheme jwtScheme = new SecurityScheme()
                 .name("Authorization")
                 .type(SecurityScheme.Type.HTTP)
@@ -46,17 +46,17 @@ public class OpenApiConfig {
                 .bearerFormat("JWT");
 
         return new OpenAPI()
-                // 🌍 Server
+              
                 .servers(List.of(
                         new Server().url("https://9085.pro604cr.amypo.ai")
                 ))
 
-                // 🔒 Apply security globally
+                
                 .addSecurityItem(
                         new SecurityRequirement().addList("BearerAuth")
                 )
 
-                // 🔑 Register security scheme
+               
                 .components(
                         new Components().addSecuritySchemes(
                                 "BearerAuth", jwtScheme
